@@ -1,0 +1,109 @@
+:root {
+    --sidebar-bg: #f3f4f7;
+    --sidebar-border: #e2e4ea;
+    --sidebar-text: #8a8f9b;
+    --sidebar-text-strong: #1e2432;
+    --sidebar-active-bg: #e8ebf2;
+    --sidebar-active-text: #2563eb;
+}
+
+.admin-layout {
+    min-height: 100vh;
+    background-color: #f7f8fb;
+}
+
+.admin-sidebar-wrapper {
+    padding: 0;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+}
+
+.sidebar-brand {
+    padding: 0 0.5rem;
+}
+
+.sidebar-brand-title {
+    display: block;
+    color: var(--sidebar-text-strong);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.sidebar-brand-subtitle {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.65rem;
+    color: #a1a6b2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 0.65rem;
+    padding: 0.55rem 0.75rem;
+    color: var(--sidebar-text);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-link:hover {
+    color: var(--sidebar-text-strong);
+    background-color: #eceef3;
+}
+
+.sidebar-link.is-active {
+    color: var(--sidebar-active-text);
+    background-color: var(--sidebar-active-bg);
+    font-weight: 600;
+}
+
+.sidebar-icon {
+    width: 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.sidebar-link.is-active .sidebar-icon {
+    color: var(--sidebar-active-text);
+}
+
+.sidebar-nav-bottom {
+    margin-top: auto;
+}
+
+@media (max-width: 767.98px) {
+    .admin-sidebar-wrapper {
+        min-height: auto;
+    }
+
+    .admin-sidebar {
+        min-height: auto;
+        padding: 1rem;
+    }
+
+    .sidebar-nav-bottom {
+        margin-top: 0.75rem;
+    }
+}
