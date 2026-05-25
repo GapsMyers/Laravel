@@ -124,6 +124,18 @@
         </header>
         <!-- Page Body -->
         <div class="mt-16 p-8 flex-1 flex flex-col gap-6 overflow-hidden max-h-[calc(100vh-64px)]">
+            @if (session('success'))
+                <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="flex items-end justify-between">
                 <div>
                     <h2 class="text-3xl font-bold tracking-tight text-on-surface">Approval Queue</h2>
@@ -143,121 +155,82 @@
             <div class="flex-1 flex gap-8 min-h-0">
                 <!-- Left List (1/3 width) -->
                 <section class="w-1/3 flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
-                    <!-- Active Card -->
-                    <div
-                        class="p-5 bg-surface-container-lowest rounded-xl shadow-lg shadow-zinc-200/40 cursor-pointer border-l-4 border-primary transition-all">
-                        <div class="flex justify-between items-start mb-3">
-                            <span
-                                class="text-[10px] font-black tracking-widest text-primary uppercase">PR-2026-004</span>
-                            <span
-                                class="px-2 py-1 text-[10px] font-bold bg-orange-100 text-orange-700 rounded-full">PENDING</span>
-                        </div>
-                        <h3 class="font-bold text-on-surface mb-1">Restock spareparts Machine A</h3>
-                        <p class="text-xs text-on-surface-variant flex items-center gap-1 mb-4">
-                            <span class="material-symbols-outlined text-sm" data-icon="person">person</span> Staff
-                            Gudang
-                        </p>
-                        <div class="flex justify-between items-end">
-                            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-tighter">Total Value
+                    @forelse ($pendingRequests as $pendingRequest)
+                        @php
+                            $isActive = $selectedRequest && $selectedRequest->id === $pendingRequest->id;
+                            $cardClass = $isActive
+                                ? 'bg-surface-container-lowest border-l-4 border-primary shadow-lg shadow-zinc-200/40'
+                                : 'bg-surface-container-low hover:bg-surface-container';
+                            $prClass = $isActive ? 'text-primary' : 'text-zinc-400';
+                            $headline = $pendingRequest->items->first()->nama_barang ?? 'Purchase Request';
+                            $totalQty = $pendingRequest->items->sum('qty_requested');
+                        @endphp
+                        <a
+                            class="p-5 rounded-xl transition-all {{ $cardClass }}"
+                            href="{{ route('approval', ['request' => $pendingRequest->id]) }}">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[10px] font-black tracking-widest uppercase {{ $prClass }}">
+                                    {{ $pendingRequest->pr_number ?? 'PR-UNKNOWN' }}
+                                </span>
+                                <span class="px-2 py-1 text-[10px] font-bold bg-orange-100 text-orange-700 rounded-full">
+                                    PENDING
+                                </span>
                             </div>
-                            <div class="text-lg font-black text-zinc-900">$1,450.00</div>
-                        </div>
-                    </div>
-                    <!-- Inactive Card 1 -->
-                    <div
-                        class="p-5 bg-surface-container-low rounded-xl hover:bg-surface-container transition-all cursor-pointer group">
-                        <div class="flex justify-between items-start mb-3">
-                            <span
-                                class="text-[10px] font-black tracking-widest text-zinc-400 uppercase">PR-2026-003</span>
-                            <span
-                                class="px-2 py-1 text-[10px] font-bold bg-orange-100 text-orange-700 rounded-full">PENDING</span>
-                        </div>
-                        <h3 class="font-bold text-on-surface mb-1">Safety Gear Replenishment</h3>
-                        <p class="text-xs text-on-surface-variant flex items-center gap-1 mb-4">
-                            <span class="material-symbols-outlined text-sm" data-icon="person">person</span> HR Dept
-                        </p>
-                        <div class="flex justify-between items-end">
-                            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-tighter">Total Value
+                            <h3 class="font-bold text-on-surface mb-1">{{ $headline }}</h3>
+                            <p class="text-xs text-on-surface-variant flex items-center gap-1 mb-4">
+                                <span class="material-symbols-outlined text-sm" data-icon="person">person</span>
+                                {{ $pendingRequest->requester_name ?? '-' }}
+                            </p>
+                            <div class="flex justify-between items-end">
+                                <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-tighter">Total Qty</div>
+                                <div class="text-lg font-black text-zinc-900">
+                                    {{ number_format($totalQty) }}
+                                </div>
                             </div>
-                            <div class="text-lg font-black text-zinc-400 group-hover:text-zinc-900 transition-colors">
-                                $820.50</div>
+                        </a>
+                    @empty
+                        <div class="p-6 rounded-xl bg-surface-container-low text-sm text-on-surface-variant">
+                            Tidak ada request pending.
                         </div>
-                    </div>
-                    <!-- Inactive Card 2 -->
-                    <div
-                        class="p-5 bg-surface-container-low rounded-xl hover:bg-surface-container transition-all cursor-pointer group">
-                        <div class="flex justify-between items-start mb-3">
-                            <span
-                                class="text-[10px] font-black tracking-widest text-zinc-400 uppercase">PR-2026-002</span>
-                            <span
-                                class="px-2 py-1 text-[10px] font-bold bg-orange-100 text-orange-700 rounded-full">PENDING</span>
-                        </div>
-                        <h3 class="font-bold text-on-surface mb-1">Lubricant Oil - Type C</h3>
-                        <p class="text-xs text-on-surface-variant flex items-center gap-1 mb-4">
-                            <span class="material-symbols-outlined text-sm" data-icon="person">person</span>
-                            Maintenance
-                        </p>
-                        <div class="flex justify-between items-end">
-                            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-tighter">Total Value
-                            </div>
-                            <div class="text-lg font-black text-zinc-400 group-hover:text-zinc-900 transition-colors">
-                                $2,100.00</div>
-                        </div>
-                    </div>
-                    <!-- Inactive Card 3 -->
-                    <div
-                        class="p-5 bg-surface-container-low rounded-xl hover:bg-surface-container transition-all cursor-pointer group">
-                        <div class="flex justify-between items-start mb-3">
-                            <span
-                                class="text-[10px] font-black tracking-widest text-zinc-400 uppercase">PR-2026-001</span>
-                            <span
-                                class="px-2 py-1 text-[10px] font-bold bg-orange-100 text-orange-700 rounded-full">PENDING</span>
-                        </div>
-                        <h3 class="font-bold text-on-surface mb-1">Office Stationery Bulk</h3>
-                        <p class="text-xs text-on-surface-variant flex items-center gap-1 mb-4">
-                            <span class="material-symbols-outlined text-sm" data-icon="person">person</span> Admin
-                        </p>
-                        <div class="flex justify-between items-end">
-                            <div class="text-[10px] text-zinc-400 uppercase font-bold tracking-tighter">Total Value
-                            </div>
-                            <div class="text-lg font-black text-zinc-400 group-hover:text-zinc-900 transition-colors">
-                                $150.25</div>
-                        </div>
-                    </div>
+                    @endforelse
                 </section>
                 <!-- Right Detail View (2/3 width) -->
                 <section
                     class="w-2/3 bg-surface-container-lowest rounded-2xl shadow-xl shadow-zinc-200/20 flex flex-col overflow-hidden">
+                    @if ($selectedRequest)
                     <!-- Header Info -->
                     <div class="p-8 pb-6 border-b border-zinc-100 bg-white/50 backdrop-blur-sm">
                         <div class="flex justify-between items-start mb-6">
                             <div>
-                                <h1 class="text-2xl font-black text-zinc-900 tracking-tighter">PR #PR-2026-004</h1>
+                                <h1 class="text-2xl font-black text-zinc-900 tracking-tighter">
+                                    PR #{{ $selectedRequest->pr_number ?? 'PR-UNKNOWN' }}
+                                </h1>
                                 <div class="flex items-center gap-4 mt-2">
                                     <div class="flex items-center gap-1.5 text-xs text-on-surface-variant">
                                         <span class="material-symbols-outlined text-sm"
                                             data-icon="person">person</span>
-                                        <span class="font-semibold">Staff Gudang</span>
+                                        <span class="font-semibold">{{ $selectedRequest->requester_name ?? '-' }}</span>
                                     </div>
                                     <div class="w-1 h-1 bg-zinc-300 rounded-full"></div>
                                     <div class="flex items-center gap-1.5 text-xs text-on-surface-variant">
                                         <span class="material-symbols-outlined text-sm"
                                             data-icon="calendar_today">calendar_today</span>
-                                        <span>Oct 12, 2026</span>
+                                        <span>{{ optional($selectedRequest->requested_at)->format('d M Y') ?? '-' }}</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">Priority</span>
-                                <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full">High
-                                    Impact</span>
+                                <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">Status</span>
+                                <span class="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-bold rounded-full">
+                                    {{ strtoupper($selectedRequest->status ?? 'pending') }}
+                                </span>
                             </div>
                         </div>
                         <div class="p-4 bg-surface-container-low rounded-lg">
-                            <span class="text-[10px] font-bold text-zinc-500 uppercase block mb-1">Notes from
-                                Requester</span>
-                            <p class="text-sm text-zinc-700 leading-relaxed italic">"Restock spareparts for Machine A.
-                                Critical for maintaining production uptime next month."</p>
+                            <span class="text-[10px] font-bold text-zinc-500 uppercase block mb-1">Catatan</span>
+                            <p class="text-sm text-zinc-700 leading-relaxed italic">
+                                {{ $selectedRequest->notes ?: 'Tidak ada catatan.' }}
+                            </p>
                         </div>
                     </div>
                     <!-- Scrollable Content -->
@@ -272,30 +245,26 @@
                                     <div class="col-span-2 text-center">Qty / Unit</div>
                                     <div class="col-span-4 text-right">Est. Price</div>
                                 </div>
-                                <div
-                                    class="grid grid-cols-12 items-center p-4 bg-zinc-50 rounded-xl hover:bg-zinc-100/80 transition-colors">
-                                    <div class="col-span-6">
-                                        <p class="font-bold text-zinc-900">High-Precision Bearing #12</p>
-                                        <p class="text-[10px] text-zinc-500">SKU: SPR-MB-001</p>
+                                @forelse ($selectedRequest->items as $item)
+                                    <div
+                                        class="grid grid-cols-12 items-center p-4 bg-zinc-50 rounded-xl hover:bg-zinc-100/80 transition-colors">
+                                        <div class="col-span-6">
+                                            <p class="font-bold text-zinc-900">{{ $item->nama_barang }}</p>
+                                            <p class="text-[10px] text-zinc-500">
+                                                SKU: {{ $item->kode_barang ?? '-' }}
+                                            </p>
+                                        </div>
+                                        <div class="col-span-2 text-center text-sm font-medium">
+                                            {{ number_format($item->qty_requested) }} Units
+                                        </div>
+                                        <div class="col-span-4 text-right">
+                                            <p class="font-black text-zinc-900">-</p>
+                                            <p class="text-[10px] text-zinc-500">Harga belum diisi</p>
+                                        </div>
                                     </div>
-                                    <div class="col-span-2 text-center text-sm font-medium">10 Pcs</div>
-                                    <div class="col-span-4 text-right">
-                                        <p class="font-black text-zinc-900">$850.00</p>
-                                        <p class="text-[10px] text-zinc-500">$85.00 / ea</p>
-                                    </div>
-                                </div>
-                                <div
-                                    class="grid grid-cols-12 items-center p-4 bg-zinc-50 rounded-xl hover:bg-zinc-100/80 transition-colors">
-                                    <div class="col-span-6">
-                                        <p class="font-bold text-zinc-900">Synthetic Sealant Kit</p>
-                                        <p class="text-[10px] text-zinc-500">SKU: SPR-MB-045</p>
-                                    </div>
-                                    <div class="col-span-2 text-center text-sm font-medium">5 Units</div>
-                                    <div class="col-span-4 text-right">
-                                        <p class="font-black text-zinc-900">$600.00</p>
-                                        <p class="text-[10px] text-zinc-500">$120.00 / ea</p>
-                                    </div>
-                                </div>
+                                @empty
+                                    <div class="text-sm text-zinc-500 px-4">Belum ada item.</div>
+                                @endforelse
                             </div>
                         </div>
                         <!-- Timeline -->
@@ -311,23 +280,48 @@
                                     </div>
                                     <div>
                                         <p class="text-sm font-bold text-zinc-900">Request Created</p>
-                                        <p class="text-[11px] text-zinc-500">Oct 12, 2026 • 09:15 AM by Staff Gudang
+                                        <p class="text-[11px] text-zinc-500">
+                                            {{ $selectedRequest->created_at?->format('d M Y • H:i') }} by {{ $selectedRequest->requester_name ?? '-' }}
                                         </p>
                                     </div>
                                 </div>
-                                <div class="relative">
-                                    <div
-                                        class="absolute -left-8 top-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 ring-4 ring-white">
-                                        <span class="material-symbols-outlined text-[14px]"
-                                            data-icon="check">check</span>
+                                @if ($selectedRequest->approved_at)
+                                    <div class="relative">
+                                        <div
+                                            class="absolute -left-8 top-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 ring-4 ring-white">
+                                            <span class="material-symbols-outlined text-[14px]"
+                                                data-icon="check">check</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-zinc-900">Request Approved</p>
+                                            <p class="text-[11px] text-zinc-500">{{ $selectedRequest->approved_at->format('d M Y • H:i') }}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p class="text-sm font-bold text-zinc-900">Inventory Verified</p>
-                                        <p class="text-[11px] text-zinc-500">Oct 12, 2026 • 10:30 AM by System Bot</p>
-                                        <p class="text-[11px] text-zinc-400 mt-1 italic">Items verified as out of stock
-                                            in regional warehouse.</p>
+                                @elseif ($selectedRequest->rejected_at)
+                                    <div class="relative">
+                                        <div
+                                            class="absolute -left-8 top-1 w-6 h-6 rounded-full bg-red-100 flex items-center justify-center text-red-600 ring-4 ring-white">
+                                            <span class="material-symbols-outlined text-[14px]"
+                                                data-icon="close">close</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-zinc-900">Request Rejected</p>
+                                            <p class="text-[11px] text-zinc-500">{{ $selectedRequest->rejected_at->format('d M Y • H:i') }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div class="relative">
+                                        <div
+                                            class="absolute -left-8 top-1 w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 ring-4 ring-white">
+                                            <span class="material-symbols-outlined text-[14px]"
+                                                data-icon="hourglass_empty">hourglass_empty</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-zinc-900">Awaiting Approval</p>
+                                            <p class="text-[11px] text-zinc-500">Menunggu persetujuan.</p>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -338,18 +332,32 @@
                             <span class="text-xs">Once approved, a PO will be automatically generated.</span>
                         </div>
                         <div class="flex gap-4 w-1/2">
-                            <button
-                                class="flex-1 py-3 px-6 rounded-xl border border-red-200 text-red-600 font-bold text-sm hover:bg-red-50 transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
-                                <span class="material-symbols-outlined text-lg" data-icon="close">close</span> Reject
-                            </button>
-                            <button
-                                class="flex-2 py-3 px-10 rounded-xl bg-gradient-to-br from-green-600 to-green-700 text-white font-bold text-sm shadow-lg shadow-green-200 hover:brightness-110 transition-all flex items-center justify-center gap-2 active:scale-[0.98] w-full">
-                                <span class="material-symbols-outlined text-lg" data-icon="done_all"
-                                    data-weight="fill" style="font-variation-settings: 'FILL' 1;">done_all</span>
-                                Approve Request
-                            </button>
+                            <form action="{{ route('approval.reject', $selectedRequest->id) }}" method="POST" class="flex-1">
+                                @csrf
+                                <button
+                                    class="w-full py-3 px-6 rounded-xl border border-red-200 text-red-600 font-bold text-sm hover:bg-red-50 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                                    type="submit">
+                                    <span class="material-symbols-outlined text-lg" data-icon="close">close</span>
+                                    Reject
+                                </button>
+                            </form>
+                            <form action="{{ route('approval.approve', $selectedRequest->id) }}" method="POST" class="flex-1">
+                                @csrf
+                                <button
+                                    class="w-full py-3 px-10 rounded-xl bg-gradient-to-br from-green-600 to-green-700 text-white font-bold text-sm shadow-lg shadow-green-200 hover:brightness-110 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                                    type="submit">
+                                    <span class="material-symbols-outlined text-lg" data-icon="done_all"
+                                        data-weight="fill" style="font-variation-settings: 'FILL' 1;">done_all</span>
+                                    Approve Request
+                                </button>
+                            </form>
                         </div>
                     </div>
+                    @else
+                        <div class="p-10 text-center text-on-surface-variant">
+                            Tidak ada request pending untuk ditampilkan.
+                        </div>
+                    @endif
                 </section>
             </div>
         </div>

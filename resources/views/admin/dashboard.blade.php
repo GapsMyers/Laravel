@@ -144,7 +144,7 @@
 						<span class="text-[10px] font-bold text-amber-600 bg-amber-100/50 px-2 py-0.5 rounded-full">ACTION REQ</span>
 					</div>
 					<p class="text-sm font-medium text-on-surface-variant mb-1">PR Pending</p>
-					<p class="text-4xl font-black text-on-surface">12</p>
+					<p class="text-4xl font-black text-on-surface">{{ number_format($pendingRequests ?? 0) }}</p>
 					<div class="mt-4 h-1 w-full bg-zinc-100 rounded-full overflow-hidden">
 						<div class="h-full bg-amber-500 w-[35%]"></div>
 					</div>
@@ -157,7 +157,7 @@
 						<span class="text-[10px] font-bold text-emerald-600 bg-emerald-100/50 px-2 py-0.5 rounded-full">+12% WK</span>
 					</div>
 					<p class="text-sm font-medium text-on-surface-variant mb-1">PR Approved</p>
-					<p class="text-4xl font-black text-on-surface">45</p>
+					<p class="text-4xl font-black text-on-surface">{{ number_format($approvedRequests ?? 0) }}</p>
 					<div class="mt-4 h-1 w-full bg-zinc-100 rounded-full overflow-hidden">
 						<div class="h-full bg-emerald-500 w-[78%]"></div>
 					</div>
@@ -170,7 +170,7 @@
 						<span class="text-[10px] font-bold text-blue-600 bg-blue-100/50 px-2 py-0.5 rounded-full">ON-GOING</span>
 					</div>
 					<p class="text-sm font-medium text-on-surface-variant mb-1">PO Aktif</p>
-					<p class="text-4xl font-black text-on-surface">28</p>
+					<p class="text-4xl font-black text-on-surface">{{ number_format($activeOrders ?? 0) }}</p>
 					<div class="mt-4 h-1 w-full bg-zinc-100 rounded-full overflow-hidden">
 						<div class="h-full bg-blue-500 w-[55%]"></div>
 					</div>
@@ -183,7 +183,7 @@
 						<span class="text-[10px] font-bold text-rose-600 bg-rose-100/50 px-2 py-0.5 rounded-full">CRITICAL</span>
 					</div>
 					<p class="text-sm font-medium text-on-surface-variant mb-1">Stok Menipis</p>
-					<p class="text-4xl font-black text-on-surface">5</p>
+					<p class="text-4xl font-black text-on-surface">{{ number_format($lowStock ?? 0) }}</p>
 					<div class="mt-4 h-1 w-full bg-zinc-100 rounded-full overflow-hidden">
 						<div class="h-full bg-rose-500 w-[20%]"></div>
 					</div>

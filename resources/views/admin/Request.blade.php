@@ -120,6 +120,27 @@
     </header>
     <!-- Main Content Canvas -->
     <main class="ml-0 md:ml-64 pt-24 px-4 md:px-8 pb-12 min-h-screen">
+        @if (session('success'))
+            <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <!-- Header Section -->
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
@@ -131,7 +152,8 @@
                 <h2 class="text-4xl font-extrabold tracking-tight text-on-surface">Purchase Request</h2>
             </div>
             <button
-                class="flex items-center gap-2 bg-gradient-to-br from-primary to-primary-container text-white px-6 py-3 rounded-lg font-semibold text-sm shadow-lg shadow-blue-600/20 active:scale-95 transition-all">
+                class="flex items-center gap-2 bg-gradient-to-br from-primary to-primary-container text-white px-6 py-3 rounded-lg font-semibold text-sm shadow-lg shadow-blue-600/20 active:scale-95 transition-all"
+                type="button" data-modal-open="create-request-modal">
                 <span class="material-symbols-outlined text-sm" data-icon="add">add</span>
                 Buat PR
             </button>
@@ -211,160 +233,98 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y-0">
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-surface-container-low transition-colors group">
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-bold text-primary font-mono tracking-tight">#PR-2026-001</span>
-                        </td>
-                        <td class="px-6 py-5 text-sm text-on-surface-variant">15 Feb 2026</td>
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-medium text-on-surface">Production</span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-700">
-                                    AW</div>
-                                <span class="text-sm font-medium text-on-surface">Andi Wijaya</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-700">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-600 mr-2"></span>
-                                Approved
-                            </span>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <button
-                                class="p-2 text-zinc-400 hover:text-primary hover:bg-white rounded-lg transition-all active:scale-90">
-                                <span class="material-symbols-outlined text-sm">visibility</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <!-- Row 2 -->
-                    <tr class="hover:bg-surface-container-low transition-colors group">
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-bold text-primary font-mono tracking-tight">#PR-2026-002</span>
-                        </td>
-                        <td class="px-6 py-5 text-sm text-on-surface-variant">16 Feb 2026</td>
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-medium text-on-surface">Logistics</span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-[10px] font-bold text-zinc-700">
-                                    SP</div>
-                                <span class="text-sm font-medium text-on-surface">Siti Putri</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-orange-500/10 text-orange-700">
-                                <span class="w-1.5 h-1.5 rounded-full bg-orange-600 mr-2"></span>
-                                Pending
-                            </span>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <button
-                                class="p-2 text-zinc-400 hover:text-primary hover:bg-white rounded-lg transition-all active:scale-90">
-                                <span class="material-symbols-outlined text-sm">visibility</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <!-- Row 3 -->
-                    <tr class="hover:bg-surface-container-low transition-colors group">
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-bold text-primary font-mono tracking-tight">#PR-2026-003</span>
-                        </td>
-                        <td class="px-6 py-5 text-sm text-on-surface-variant">18 Feb 2026</td>
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-medium text-on-surface">Maintenance</span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-700">
-                                    BK</div>
-                                <span class="text-sm font-medium text-on-surface">Budi Kusuma</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-700">
-                                <span class="w-1.5 h-1.5 rounded-full bg-red-600 mr-2"></span>
-                                Rejected
-                            </span>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <button
-                                class="p-2 text-zinc-400 hover:text-primary hover:bg-white rounded-lg transition-all active:scale-90">
-                                <span class="material-symbols-outlined text-sm">visibility</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <!-- Loading Skeleton Placeholder Row -->
-                    <tr class="opacity-40 animate-pulse pointer-events-none">
-                        <td class="px-6 py-5">
-                            <div class="h-4 bg-zinc-200 rounded w-24"></div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="h-4 bg-zinc-200 rounded w-20"></div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="h-4 bg-zinc-200 rounded w-24"></div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-zinc-200"></div>
-                                <div class="h-4 bg-zinc-200 rounded w-24"></div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="h-6 bg-zinc-200 rounded-full w-20"></div>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <div class="h-8 w-8 bg-zinc-200 rounded-lg ml-auto"></div>
-                        </td>
-                    </tr>
-                    <!-- Row 4 -->
-                    <tr class="hover:bg-surface-container-low transition-colors group">
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-bold text-primary font-mono tracking-tight">#PR-2026-004</span>
-                        </td>
-                        <td class="px-6 py-5 text-sm text-on-surface-variant">21 Feb 2026</td>
-                        <td class="px-6 py-5">
-                            <span class="text-sm font-medium text-on-surface">Quality Control</span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-[10px] font-bold text-zinc-700">
-                                    DH</div>
-                                <span class="text-sm font-medium text-on-surface">Dewi Hestari</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-700">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-600 mr-2"></span>
-                                Approved
-                            </span>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <button
-                                class="p-2 text-zinc-400 hover:text-primary hover:bg-white rounded-lg transition-all active:scale-90">
-                                <span class="material-symbols-outlined text-sm">visibility</span>
-                            </button>
-                        </td>
-                    </tr>
+                    @forelse ($requests as $request)
+                        @php
+                            $status = $request->status ?? 'pending';
+
+                            switch ($status) {
+                                case 'approved':
+                                    $statusLabel = 'Approved';
+                                    $statusClass = 'bg-green-500/10 text-green-700';
+                                    $statusDotClass = 'bg-green-600';
+                                    break;
+                                case 'rejected':
+                                    $statusLabel = 'Rejected';
+                                    $statusClass = 'bg-red-500/10 text-red-700';
+                                    $statusDotClass = 'bg-red-600';
+                                    break;
+                                case 'partial':
+                                    $statusLabel = 'Partial';
+                                    $statusClass = 'bg-amber-500/10 text-amber-700';
+                                    $statusDotClass = 'bg-amber-600';
+                                    break;
+                                case 'received':
+                                    $statusLabel = 'Received';
+                                    $statusClass = 'bg-blue-500/10 text-blue-700';
+                                    $statusDotClass = 'bg-blue-600';
+                                    break;
+                                default:
+                                    $statusLabel = 'Pending';
+                                    $statusClass = 'bg-orange-500/10 text-orange-700';
+                                    $statusDotClass = 'bg-orange-600';
+                                    break;
+                            }
+
+                            $initialsSource = $request->requester_name ?? '';
+                            $initials = strtoupper(substr($initialsSource, 0, 2));
+                            $initials = $initials !== '' ? $initials : 'NA';
+                            $requestedDate = optional($request->requested_at)->format('d M Y') ?? '-';
+
+                            $actionUrl = in_array($status, ['approved', 'partial', 'received'], true)
+                                ? route('goods-receipt', ['purchaseRequest' => $request->id])
+                                : route('approval', ['request' => $request->id]);
+                        @endphp
+                        <tr class="hover:bg-surface-container-low transition-colors group">
+                            <td class="px-6 py-5">
+                                <span class="text-sm font-bold text-primary font-mono tracking-tight">
+                                    #{{ $request->pr_number ?? 'PR-UNKNOWN' }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-5 text-sm text-on-surface-variant">{{ $requestedDate }}</td>
+                            <td class="px-6 py-5">
+                                <span class="text-sm font-medium text-on-surface">{{ $request->department ?? '-' }}</span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-700">
+                                        {{ $initials }}
+                                    </div>
+                                    <span class="text-sm font-medium text-on-surface">
+                                        {{ $request->requester_name ?? '-' }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span
+                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold {{ $statusClass }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ $statusDotClass }} mr-2"></span>
+                                    {{ $statusLabel }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-5 text-right">
+                                <a
+                                    class="inline-flex items-center p-2 text-zinc-400 hover:text-primary hover:bg-white rounded-lg transition-all active:scale-90"
+                                    href="{{ $actionUrl }}">
+                                    <span class="material-symbols-outlined text-sm">visibility</span>
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-10 text-center text-sm text-on-surface-variant">
+                                Belum ada purchase request.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
             <!-- Pagination -->
             <div
                 class="bg-surface-container-low px-6 py-4 flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800">
-                <p class="text-[11px] text-on-surface-variant font-medium">Showing 1-10 of 24 Purchase Requests</p>
+                <p class="text-[11px] text-on-surface-variant font-medium">
+                    Showing all {{ number_format($requests->count()) }} Purchase Requests
+                </p>
                 <div class="flex items-center gap-1">
                     <button class="p-2 text-zinc-400 hover:bg-white rounded-lg transition-all disabled:opacity-30"
                         disabled="">
@@ -418,6 +378,154 @@
             </div>
         </div>
     </main>
+
+    <div id="create-request-modal" data-modal-root class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/40" data-modal-close="create-request-modal"></div>
+        <div class="relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl border border-zinc-200">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-100">
+                <h3 class="text-lg font-bold">Buat Purchase Request</h3>
+                <button class="text-zinc-500 hover:text-zinc-800" type="button" data-modal-close="create-request-modal">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form action="{{ route('request.store') }}" method="POST" class="p-6 space-y-5">
+                @csrf
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" for="department">Department</label>
+                        <input id="department" name="department" type="text" required
+                            class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                            value="{{ old('department') }}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" for="requester_name">Requester</label>
+                        <input id="requester_name" name="requester_name" type="text" required
+                            class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                            value="{{ old('requester_name') }}">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" for="requested_at">Tanggal Request</label>
+                        <input id="requested_at" name="requested_at" type="date" required
+                            class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                            value="{{ old('requested_at', now()->toDateString()) }}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" for="notes">Catatan</label>
+                        <input id="notes" name="notes" type="text"
+                            class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                            value="{{ old('notes') }}">
+                    </div>
+                </div>
+                <div class="border-t border-zinc-100 pt-4">
+                    <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">Item Request</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="item_barang_id">Pilih Barang (Opsional)</label>
+                            <select id="item_barang_id" name="item[barang_id]"
+                                class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20">
+                                <option value="">- Manual -</option>
+                                @forelse ($barangs as $barang)
+                                    <option value="{{ $barang->id }}" @selected(old('item.barang_id') == $barang->id)>
+                                        {{ $barang->nama_barang }} ({{ $barang->kode_barang }})
+                                    </option>
+                                @empty
+                                    <option value="" disabled>Belum ada barang</option>
+                                @endforelse
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="item_qty_requested">Qty</label>
+                            <input id="item_qty_requested" name="item[qty_requested]" type="number" min="1" required
+                                class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                                value="{{ old('item.qty_requested', 1) }}">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="item_nama_barang">Nama Barang</label>
+                            <input id="item_nama_barang" name="item[nama_barang]" type="text"
+                                class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                                value="{{ old('item.nama_barang') }}">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="item_kode_barang">Kode Barang</label>
+                            <input id="item_kode_barang" name="item[kode_barang]" type="text"
+                                class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                                value="{{ old('item.kode_barang') }}">
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-on-surface-variant mt-3">Jika memilih barang, nama/kode akan diambil otomatis.</p>
+                </div>
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" data-modal-close="create-request-modal"
+                        class="px-4 py-2 rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-50">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg bg-primary text-white hover:opacity-90">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const openButtons = document.querySelectorAll('[data-modal-open]');
+        const closeButtons = document.querySelectorAll('[data-modal-close]');
+
+        const showModal = (id) => {
+            const modal = document.getElementById(id);
+
+            if (!modal) {
+                return;
+            }
+
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        };
+
+        const hideModal = (id) => {
+            const modal = document.getElementById(id);
+
+            if (!modal) {
+                return;
+            }
+
+            modal.classList.add('hidden');
+
+            if (!document.querySelector('[data-modal-root]:not(.hidden)')) {
+                document.body.classList.remove('overflow-hidden');
+            }
+        };
+
+        openButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                showModal(button.getAttribute('data-modal-open'));
+            });
+        });
+
+        closeButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                hideModal(button.getAttribute('data-modal-close'));
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') {
+                return;
+            }
+
+            document.querySelectorAll('[data-modal-root]:not(.hidden)').forEach((modal) => {
+                modal.classList.add('hidden');
+            });
+
+            document.body.classList.remove('overflow-hidden');
+        });
+
+        @if ($errors->any())
+            showModal('create-request-modal');
+        @endif
+    </script>
     <!-- FAB Suppression (Per Mandate) -->
     <!-- Suppressed on List View screens to avoid clutter and focus on the Data Table actions -->
 </body>

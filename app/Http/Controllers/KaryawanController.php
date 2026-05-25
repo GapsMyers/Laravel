@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\Karyawan;
+use App\Models\Request as PurchaseRequest;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -12,7 +14,28 @@ class KaryawanController extends Controller
      */
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $pendingRequests = PurchaseRequest::query()
+            ->where('status', 'pending')
+            ->count();
+
+        $approvedRequests = PurchaseRequest::query()
+            ->where('status', 'approved')
+            ->count();
+
+        $activeOrders = PurchaseRequest::query()
+            ->whereIn('status', ['approved', 'partial'])
+            ->count();
+
+        $lowStock = Barang::query()
+            ->where('stok', '<', 10)
+            ->count();
+
+        return view('admin.dashboard', [
+            'pendingRequests' => $pendingRequests,
+            'approvedRequests' => $approvedRequests,
+            'activeOrders' => $activeOrders,
+            'lowStock' => $lowStock,
+        ]);
     }
 
     /**
@@ -93,4 +116,3 @@ class KaryawanController extends Controller
         return redirect()->route('karyawan.index')->with('success', 'Data karyawan berhasil dihapus.');
     }
 }
-

@@ -122,7 +122,7 @@
                 <a class="text-blue-600 font-semibold" href="#">Product</a>
                 <a class="text-[#434655] hover:text-[#1a1c1c] transition-colors" href="#case-study">Case Studies</a>
                 <a class="text-[#434655] hover:text-[#1a1c1c] transition-colors" href="#features">Features</a>
-                    <a class="text-[#434655] hover:text-[#1a1c1c] transition-colors" href="{{ route('karyawan.index') }}">CRUD</a>
+                <a class="text-[#434655] hover:text-[#1a1c1c] transition-colors" href="{{ route('dashboard') }}">Dashboard</a>
             </div>
             <div class="hidden md:flex items-center gap-4">
                 <button class="text-[#434655] hover:opacity-80 transition-all active:scale-95">Login</button>
@@ -142,7 +142,7 @@
                     <a class="text-blue-600 font-semibold" href="#">Product</a>
                     <a class="text-[#434655] hover:text-[#1a1c1c] transition-colors" href="#case-study">Case Studies</a>
                     <a class="text-[#434655] hover:text-[#1a1c1c] transition-colors" href="#features">Features</a>
-                    <a class="text-[#434655] hover:text-[#1a1c1c] transition-colors" href="{{ route('karyawan.index') }}">CRUD</a>
+                    <a class="text-[#434655] hover:text-[#1a1c1c] transition-colors" href="{{ route('dashboard') }}">Dashboard</a>
                 </div>
                 <div class="mt-4 pt-4 border-t border-outline-variant/20 flex flex-col gap-3">
                     <button class="text-left text-[#434655] hover:opacity-80 transition-all active:scale-95" type="button">Login</button>

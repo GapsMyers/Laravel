@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Barang extends Model
 {
@@ -11,6 +12,11 @@ class Barang extends Model
         'kode_barang',
         'stok',
         'status',
+    ];
+
+    protected $attributes = [
+        'stok' => 0,
+        'status' => true,
     ];
 
     /**
@@ -22,5 +28,10 @@ class Barang extends Model
             'stok' => 'integer',
             'status' => 'boolean',
         ];
+    }
+
+    public function requestItems(): HasMany
+    {
+        return $this->hasMany(RequestItem::class);
     }
 }
