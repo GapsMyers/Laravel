@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<title>Purchase Order Management | InvenTrack</title>
+	<title>Purchase Request Management | InvenTrack</title>
 
 	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&amp;display=swap"
@@ -122,44 +122,39 @@
 			<div>
 				<span class="text-[11px] font-bold text-blue-600 tracking-widest uppercase mb-2 block">Management
 					Cluster</span>
-				<h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface">Purchase Orders</h2>
+				<h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface">Purchase Requests</h2>
 				<p class="text-on-surface-variant mt-2 max-w-lg">Monitor, track, and manage all active procurement
 					cycles across regional manufacturing hubs.</p>
 			</div>
-			<button
-				class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2.5 rounded-lg font-semibold text-sm shadow-lg shadow-blue-200 flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all w-full md:w-auto justify-center">
-				<span class="material-symbols-outlined text-lg">add</span>
-				Create New PO
-			</button>
 		</section>
 
 		<section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
 			<div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
-				<p class="uppercase tracking-wider text-on-surface-variant font-bold text-[10px]">Total Active POs</p>
+				<p class="uppercase tracking-wider text-on-surface-variant font-bold text-[10px]">Total Active PRs</p>
 				<div class="mt-4 flex items-end justify-between">
-					<span class="text-3xl font-black text-on-surface">142</span>
-					<span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full font-bold">+12%</span>
+					<span class="text-3xl font-black text-on-surface">{{ $stats['total'] }}</span>
+					<span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full font-bold">+0%</span>
 				</div>
 			</div>
 			<div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
 				<p class="uppercase tracking-wider text-on-surface-variant font-bold text-[10px]">Pending Approval</p>
 				<div class="mt-4 flex items-end justify-between">
-					<span class="text-3xl font-black text-on-surface">24</span>
+					<span class="text-3xl font-black text-on-surface">{{ $stats['pending'] }}</span>
 					<span class="material-symbols-outlined text-orange-500">pending_actions</span>
 				</div>
 			</div>
 			<div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
-				<p class="uppercase tracking-wider text-on-surface-variant font-bold text-[10px]">Expected Today</p>
+				<p class="uppercase tracking-wider text-on-surface-variant font-bold text-[10px]">Approved / In Process</p>
 				<div class="mt-4 flex items-end justify-between">
-					<span class="text-3xl font-black text-on-surface">08</span>
+					<span class="text-3xl font-black text-on-surface">{{ $stats['approved'] }}</span>
 					<span class="material-symbols-outlined text-green-600">local_shipping</span>
 				</div>
 			</div>
 			<div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
-				<p class="uppercase tracking-wider text-on-surface-variant font-bold text-[10px]">Overdue Orders</p>
+				<p class="uppercase tracking-wider text-on-surface-variant font-bold text-[10px]">Fully Received</p>
 				<div class="mt-4 flex items-end justify-between">
-					<span class="text-3xl font-black text-error">03</span>
-					<span class="material-symbols-outlined text-error">warning</span>
+					<span class="text-3xl font-black text-blue-600">{{ $stats['received'] }}</span>
+					<span class="material-symbols-outlined text-blue-600">task_alt</span>
 				</div>
 			</div>
 		</section>
@@ -192,57 +187,41 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-zinc-50">
-							<tr class="hover:bg-surface-container-high transition-colors cursor-pointer group bg-zinc-50/30">
-								<td class="px-8 py-5 font-bold text-primary text-sm">PO-2023-8841</td>
-								<td class="px-8 py-5 text-sm font-medium text-on-surface">Industrial Alloys Inc.</td>
-								<td class="px-8 py-5 text-sm text-on-surface-variant">Oct 24, 2023</td>
-								<td class="px-8 py-5">
-									<span
-										class="px-3 py-1 bg-blue-100/60 text-blue-700 text-[11px] font-bold rounded-full uppercase tracking-tighter">Ordered</span>
-								</td>
-								<td class="px-8 py-5 text-sm font-bold text-on-surface">$12,450.00</td>
-							</tr>
-							<tr
-								class="hover:bg-surface-container-high transition-colors cursor-pointer group border-l-2 border-primary bg-surface-container-low/40">
-								<td class="px-8 py-5 font-bold text-primary text-sm">PO-2023-8902</td>
-								<td class="px-8 py-5 text-sm font-medium text-on-surface">Global Circuits Ltd.</td>
-								<td class="px-8 py-5 text-sm text-on-surface-variant">Oct 22, 2023</td>
-								<td class="px-8 py-5">
-									<span
-										class="px-3 py-1 bg-orange-100/60 text-orange-700 text-[11px] font-bold rounded-full uppercase tracking-tighter">Shipped</span>
-								</td>
-								<td class="px-8 py-5 text-sm font-bold text-on-surface">$45,200.00</td>
-							</tr>
-							<tr class="hover:bg-surface-container-high transition-colors cursor-pointer group">
-								<td class="px-8 py-5 font-bold text-primary text-sm">PO-2023-8750</td>
-								<td class="px-8 py-5 text-sm font-medium text-on-surface">Apex Fasteners</td>
-								<td class="px-8 py-5 text-sm text-on-surface-variant">Oct 20, 2023</td>
-								<td class="px-8 py-5">
-									<span
-										class="px-3 py-1 bg-green-100/60 text-green-700 text-[11px] font-bold rounded-full uppercase tracking-tighter">Completed</span>
-								</td>
-								<td class="px-8 py-5 text-sm font-bold text-on-surface">$2,100.00</td>
-							</tr>
-							<tr class="hover:bg-surface-container-high transition-colors cursor-pointer group">
-								<td class="px-8 py-5 font-bold text-primary text-sm">PO-2023-8911</td>
-								<td class="px-8 py-5 text-sm font-medium text-on-surface">Stellar Polymers</td>
-								<td class="px-8 py-5 text-sm text-on-surface-variant">Oct 19, 2023</td>
-								<td class="px-8 py-5">
-									<span
-										class="px-3 py-1 bg-orange-100/60 text-orange-700 text-[11px] font-bold rounded-full uppercase tracking-tighter">Shipped</span>
-								</td>
-								<td class="px-8 py-5 text-sm font-bold text-on-surface">$18,780.00</td>
-							</tr>
-							<tr class="hover:bg-surface-container-high transition-colors cursor-pointer group">
-								<td class="px-8 py-5 font-bold text-primary text-sm">PO-2023-8945</td>
-								<td class="px-8 py-5 text-sm font-medium text-on-surface">Precision Die-Cast</td>
-								<td class="px-8 py-5 text-sm text-on-surface-variant">Oct 18, 2023</td>
-								<td class="px-8 py-5">
-									<span
-										class="px-3 py-1 bg-blue-100/60 text-blue-700 text-[11px] font-bold rounded-full uppercase tracking-tighter">Ordered</span>
-								</td>
-								<td class="px-8 py-5 text-sm font-bold text-on-surface">$31,250.00</td>
-							</tr>
+							@foreach ($requests as $request)
+								<tr onclick="window.location='{{ route('order', ['request' => $request->id]) }}'"
+									class="hover:bg-surface-container-high transition-colors cursor-pointer group {{ optional($selectedRequest)->id === $request->id ? 'border-l-2 border-primary bg-surface-container-low/40' : 'bg-zinc-50/30' }}">
+									<td class="px-8 py-5 font-bold text-primary text-sm">{{ $request->pr_number }}</td>
+									<td class="px-8 py-5 text-sm font-medium text-on-surface">{{ $request->department }}</td>
+									<td class="px-8 py-5 text-sm text-on-surface-variant">
+										{{ $request->requested_at?->format('M d, Y') ?? '-' }}</td>
+									<td class="px-8 py-5">
+										@php
+											$statusColors = [
+											    'pending' => 'bg-orange-100/60 text-orange-700',
+											    'approved' => 'bg-blue-100/60 text-blue-700',
+											    'partial' => 'bg-cyan-100/60 text-cyan-700',
+											    'received' => 'bg-green-100/60 text-green-700',
+											    'rejected' => 'bg-red-100/60 text-red-700',
+											];
+											$color = $statusColors[$request->status] ?? 'bg-zinc-100/60 text-zinc-700';
+										@endphp
+										<span
+											class="px-3 py-1 {{ $color }} text-[11px] font-bold rounded-full uppercase tracking-tighter">
+											{{ $request->status }}
+										</span>
+									</td>
+									<td class="px-8 py-5 text-sm font-bold text-on-surface">
+										{{ $request->items->sum('qty_requested') }} items</td>
+								</tr>
+							@endforeach
+
+							@if ($requests->isEmpty())
+								<tr>
+									<td class="px-8 py-10 text-center text-on-surface-variant text-sm" colspan="5">
+										No purchase requests found.
+									</td>
+								</tr>
+							@endif
 						</tbody>
 					</table>
 				</div>
@@ -250,95 +229,99 @@
 
 			<div class="w-full xl:w-[400px] flex flex-col gap-6">
 				<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-zinc-100/50">
-					<div class="flex items-center gap-4 mb-6">
-						<div class="w-14 h-14 bg-zinc-100 rounded-lg flex items-center justify-center">
-							<span class="material-symbols-outlined text-3xl text-zinc-400">factory</span>
+					@if ($selectedRequest)
+						<div class="flex items-center gap-4 mb-6">
+							<div class="w-14 h-14 bg-zinc-100 rounded-lg flex items-center justify-center">
+								<span class="material-symbols-outlined text-3xl text-zinc-400">factory</span>
+							</div>
+							<div>
+								<h4 class="font-black text-lg text-on-surface leading-tight">{{ $selectedRequest->department }}
+								</h4>
+								<p class="text-xs text-on-surface-variant font-medium">Primary Partner Hub</p>
+							</div>
 						</div>
-						<div>
-							<h4 class="font-black text-lg text-on-surface leading-tight">Global Circuits Ltd.</h4>
-							<p class="text-xs text-on-surface-variant font-medium">Primary Electronics Partner</p>
+						<div class="space-y-4 pt-4 border-t border-zinc-100">
+							<div class="flex justify-between items-center">
+								<span
+									class="text-[11px] font-bold uppercase text-on-surface-variant tracking-tighter">Requester</span>
+								<span class="text-sm font-medium text-on-surface">{{ $selectedRequest->requester_name }}</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span class="text-[11px] font-bold uppercase text-on-surface-variant tracking-tighter">Status</span>
+								<span class="text-sm font-bold text-primary uppercase">{{ $selectedRequest->status }}</span>
+							</div>
+							<div class="flex justify-between items-center">
+								<span
+									class="text-[11px] font-bold uppercase text-on-surface-variant tracking-tighter">Items</span>
+								<span class="text-sm font-medium text-on-surface">{{ $selectedRequest->items->count() }}
+									Categories</span>
+							</div>
 						</div>
-					</div>
-					<div class="space-y-4 pt-4 border-t border-zinc-100">
-						<div class="flex justify-between items-center">
-							<span class="text-[11px] font-bold uppercase text-on-surface-variant tracking-tighter">Contact</span>
-							<span class="text-sm font-medium text-on-surface">Marcus Vane</span>
+					@else
+						<div class="text-center py-10 text-on-surface-variant text-sm">
+							Select a request to see details.
 						</div>
-						<div class="flex justify-between items-center">
-							<span class="text-[11px] font-bold uppercase text-on-surface-variant tracking-tighter">Lead
-								Time</span>
-							<span class="text-sm font-medium text-on-surface">14 Days</span>
-						</div>
-						<div class="flex justify-between items-center">
-							<span
-								class="text-[11px] font-bold uppercase text-on-surface-variant tracking-tighter">Compliance</span>
-							<span
-								class="text-xs px-2 py-0.5 bg-green-50 text-green-600 rounded border border-green-100 font-bold">A+
-								RATING</span>
-						</div>
-					</div>
+					@endif
 				</div>
 
-				<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm flex-1 relative overflow-hidden">
-					<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2">
+				@if ($selectedRequest)
+					<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm flex-1 relative overflow-hidden">
+						<div
+							class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2">
+						</div>
+						<h4 class="font-black text-lg text-on-surface mb-8">Request Progress</h4>
+						<div class="relative pl-8 space-y-12">
+							<div class="absolute left-[7px] top-1 bottom-1 w-0.5 bg-zinc-200">
+								<div class="absolute top-0 left-0 w-full bg-gradient-to-b from-primary to-primary-container"
+									style="height: {{ $selectedRequest->status === 'received' ? '100%' : ($selectedRequest->status === 'approved' || $selectedRequest->status === 'partial' ? '66%' : '33%') }}">
+								</div>
+							</div>
+
+							<div class="relative">
+								<div
+									class="absolute -left-[31px] w-4 h-4 rounded-full border-4 border-white bg-primary shadow-sm ring-4 ring-primary/10">
+								</div>
+								<div>
+									<p class="text-xs font-bold text-primary uppercase">Requested</p>
+									<p class="text-xs text-on-surface-variant mt-0.5">
+										{{ $selectedRequest->requested_at?->format('M d, Y') ?? 'N/A' }}</p>
+								</div>
+							</div>
+
+							<div class="relative">
+								<div
+									class="absolute -left-[31px] w-4 h-4 rounded-full border-4 border-white {{ in_array($selectedRequest->status, ['approved', 'partial', 'received']) ? 'bg-primary ring-4 ring-primary/10' : 'bg-zinc-200' }} shadow-sm">
+								</div>
+								<div>
+									<p
+										class="text-xs font-bold {{ in_array($selectedRequest->status, ['approved', 'partial', 'received']) ? 'text-primary' : 'text-on-surface-variant' }} uppercase">
+										Approved</p>
+									<p class="text-xs text-on-surface-variant mt-0.5">
+										{{ $selectedRequest->approved_at?->format('M d, Y') ?? 'Awaiting...' }}</p>
+								</div>
+							</div>
+
+							<div class="relative">
+								<div
+									class="absolute -left-[31px] w-4 h-4 rounded-full border-4 border-white {{ $selectedRequest->status === 'received' ? 'bg-primary ring-4 ring-primary/10' : ($selectedRequest->status === 'partial' ? 'bg-primary animate-pulse' : 'bg-zinc-200') }} shadow-sm">
+								</div>
+								<div>
+									<p
+										class="text-xs font-bold {{ in_array($selectedRequest->status, ['partial', 'received']) ? 'text-primary' : 'text-on-surface-variant' }} uppercase">
+										Received</p>
+									<p class="text-xs text-on-surface-variant mt-0.5">
+										{{ $selectedRequest->received_at?->format('M d, Y') ?? 'Pending...' }}</p>
+								</div>
+							</div>
+						</div>
+
+						<a href="{{ route('goods-receipt', ['request' => $selectedRequest->id]) }}"
+							class="w-full mt-10 py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary hover:bg-zinc-50 transition-colors flex items-center justify-center gap-2">
+							<span class="material-symbols-outlined text-lg">receipt_long</span>
+							Manage Receipt
+						</a>
 					</div>
-					<h4 class="font-black text-lg text-on-surface mb-8">Shipment Progress</h4>
-					<div class="relative pl-8 space-y-12">
-						<div class="absolute left-[7px] top-1 bottom-1 w-0.5 bg-zinc-200">
-							<div class="absolute top-0 left-0 w-full h-[66%] bg-gradient-to-b from-primary to-primary-container">
-							</div>
-						</div>
-
-						<div class="relative">
-							<div
-								class="absolute -left-[31px] w-4 h-4 rounded-full border-4 border-white bg-primary shadow-sm ring-4 ring-primary/10">
-							</div>
-							<div>
-								<p class="text-xs font-bold text-primary uppercase">Order Confirmed</p>
-								<p class="text-xs text-on-surface-variant mt-0.5">Oct 22, 2023 • 09:15 AM</p>
-							</div>
-						</div>
-
-						<div class="relative">
-							<div
-								class="absolute -left-[31px] w-4 h-4 rounded-full border-4 border-white bg-primary shadow-sm ring-4 ring-primary/10">
-							</div>
-							<div>
-								<p class="text-xs font-bold text-primary uppercase">Production Complete</p>
-								<p class="text-xs text-on-surface-variant mt-0.5">Oct 24, 2023 • 04:30 PM</p>
-							</div>
-						</div>
-
-						<div class="relative">
-							<div
-								class="absolute -left-[31px] w-4 h-4 rounded-full border-4 border-white bg-primary shadow-sm animate-pulse">
-							</div>
-							<div>
-								<p class="text-xs font-bold text-on-surface uppercase">In Transit</p>
-								<p
-									class="text-[11px] bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded-sm inline-block mt-1 uppercase tracking-tighter">
-									Carrier: DHL Express
-								</p>
-								<p class="text-xs text-on-surface-variant mt-1.5 leading-relaxed">Currently at Central Hub,
-									Singapore. ETA: 2 Days.</p>
-							</div>
-						</div>
-
-						<div class="relative">
-							<div class="absolute -left-[31px] w-4 h-4 rounded-full border-4 border-white bg-zinc-200"></div>
-							<div class="opacity-50">
-								<p class="text-xs font-bold text-on-surface-variant uppercase">Delivery &amp; Receipt</p>
-								<p class="text-xs text-on-surface-variant mt-0.5">Expected Oct 27, 2023</p>
-							</div>
-						</div>
-					</div>
-
-					<button
-						class="w-full mt-10 py-3 border border-outline-variant/30 rounded-lg text-sm font-bold text-primary hover:bg-zinc-50 transition-colors flex items-center justify-center gap-2">
-						<span class="material-symbols-outlined text-lg">map</span>
-						Live Track Location
-					</button>
-				</div>
+				@endif
 			</div>
 		</section>
 	</main>

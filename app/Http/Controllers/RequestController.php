@@ -104,6 +104,30 @@ class RequestController extends Controller
         return redirect()->route('approval')->with('success', 'Request berhasil ditolak.');
     }
 
+    public function orderIndex()
+    {
+        $requests = PurchaseRequest::query()
+            ->with('items')
+            ->latest()
+            ->get();
+
+        $stats = [
+            'total' => PurchaseRequest::count(),
+            'pending' => PurchaseRequest::where('status', 'pending')->count(),
+            'approved' => PurchaseRequest::where('status', 'approved')->count(),
+            'received' => PurchaseRequest::where('status', 'received')->count(),
+        ];
+
+        $selectedRequestId = request()->integer('request');
+        $selectedRequest = $requests->firstWhere('id', $selectedRequestId) ?? $requests->first();
+
+        return view('admin.order', [
+            'requests' => $requests,
+            'stats' => $stats,
+            'selectedRequest' => $selectedRequest,
+        ]);
+    }
+
     private function generatePrNumber(): string
     {
         $year = now()->format('Y');

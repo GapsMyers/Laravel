@@ -27,7 +27,7 @@
             href="{{ route('order') }}">
             <span class="material-symbols-outlined mr-4 transition-transform group-hover:translate-x-1 duration-300"
                 data-icon="description">description</span>
-            <span class="font-sans text-[13px] font-medium">Purchase Order</span>
+            <span class="font-sans text-[13px] font-medium">Purchase Request</span>
         </a>
         <a class="group flex items-center px-8 py-3 {{ request()->routeIs('goods-receipt') ? 'border-l-[3px] border-blue-600 bg-zinc-200/50 dark:bg-zinc-800/40 text-blue-700 dark:text-blue-300 font-bold transition-all' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors' }}"
             href="{{ route('goods-receipt') }}">

@@ -303,8 +303,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-5 text-right">
-                                <a
-                                    class="inline-flex items-center p-2 text-zinc-400 hover:text-primary hover:bg-white rounded-lg transition-all active:scale-90"
+                                <a class="inline-flex items-center p-2 text-zinc-400 hover:text-primary hover:bg-white rounded-lg transition-all active:scale-90"
                                     href="{{ $actionUrl }}">
                                     <span class="material-symbols-outlined text-sm">visibility</span>
                                 </a>
@@ -379,7 +378,8 @@
         </div>
     </main>
 
-    <div id="create-request-modal" data-modal-root class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4">
+    <div id="create-request-modal" data-modal-root
+        class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/40" data-modal-close="create-request-modal"></div>
         <div class="relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl border border-zinc-200">
             <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-100">
@@ -422,7 +422,8 @@
                     <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">Item Request</p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-semibold mb-2" for="item_barang_id">Pilih Barang (Opsional)</label>
+                            <label class="block text-sm font-semibold mb-2" for="item_barang_id">Pilih Barang
+                                (Opsional)</label>
                             <select id="item_barang_id" name="item[barang_id]"
                                 class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20">
                                 <option value="">- Manual -</option>
@@ -442,21 +443,8 @@
                                 value="{{ old('item.qty_requested', 1) }}">
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div>
-                            <label class="block text-sm font-semibold mb-2" for="item_nama_barang">Nama Barang</label>
-                            <input id="item_nama_barang" name="item[nama_barang]" type="text"
-                                class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
-                                value="{{ old('item.nama_barang') }}">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold mb-2" for="item_kode_barang">Kode Barang</label>
-                            <input id="item_kode_barang" name="item[kode_barang]" type="text"
-                                class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
-                                value="{{ old('item.kode_barang') }}">
-                        </div>
-                    </div>
-                    <p class="text-[11px] text-on-surface-variant mt-3">Jika memilih barang, nama/kode akan diambil otomatis.</p>
+                    <p class="text-[11px] text-on-surface-variant mt-3">Jika memilih barang, nama/kode akan diambil
+                        otomatis.</p>
                 </div>
                 <div class="pt-2 flex items-center justify-end gap-3">
                     <button type="button" data-modal-close="create-request-modal"

@@ -21,7 +21,7 @@
             </a>
             <a class="sidebar-link" href="#">
                 <span class="sidebar-icon"><i class="bi bi-file-earmark-text"></i></span>
-                <span>Purchase Order</span>
+                <span>Purchase Request</span>
             </a>
             <a class="sidebar-link" href="#">
                 <span class="sidebar-icon"><i class="bi bi-box-seam"></i></span>

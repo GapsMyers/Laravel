@@ -19,9 +19,7 @@ Route::get('/Approval', [RequestController::class, 'approvalIndex'])->name('appr
 Route::post('/Approval/{purchaseRequest}/approve', [RequestController::class, 'approve'])->name('approval.approve');
 Route::post('/Approval/{purchaseRequest}/reject', [RequestController::class, 'reject'])->name('approval.reject');
 
-Route::get('/Purchase-Order', function () {
-    return view('admin.order');
-})->name('order');
+Route::get('/Purchase-Order', [RequestController::class, 'orderIndex'])->name('order');
 
 Route::get('/Goods-Receipt/{purchaseRequest?}', [GoodsReceiptController::class, 'show'])->name('goods-receipt');
 Route::post('/Goods-Receipt/{purchaseRequest}/receive', [GoodsReceiptController::class, 'store'])

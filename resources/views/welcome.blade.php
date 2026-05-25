@@ -262,7 +262,7 @@
                         <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
                     </div>
                     <span class="text-xs font-bold tracking-wider uppercase text-on-surface-variant">Step 03</span>
-                    <span class="font-medium mt-1">Purchase Order</span>
+                    <span class="font-medium mt-1">Purchase Request</span>
                 </div>
                 <div class="relative z-10 flex flex-col items-center group w-full md:w-auto">
                     <div
