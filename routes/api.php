@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('sanctum/token', [AuthController::class, 'store']);
 
+//API koneksi (IP atau domain):port/api/endpoint
+
 Route::name('api.')->group(function (): void {
     Route::apiResource('karyawans', KaryawanController::class)->only(['index', 'show']);
     Route::apiResource('barangs', BarangController::class)->only(['index', 'show']);
