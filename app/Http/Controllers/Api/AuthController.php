@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthTokenRequest;
-use App\Models\User;
+use App\Models\Karyawan;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,8 +12,9 @@ class AuthController extends Controller
 {
     public function store(AuthTokenRequest $request): JsonResponse
     {
-        $user = User::query()
-            ->where('email', $request->string('email')->toString())
+        $user = Karyawan::query()
+            ->where('Email', $request->string('email')->toString())
+            ->where('status', true)
             ->first();
 
         if (! $user || ! Hash::check($request->string('password')->toString(), $user->password)) {

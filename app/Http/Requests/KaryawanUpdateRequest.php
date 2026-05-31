@@ -25,6 +25,7 @@ class KaryawanUpdateRequest extends ApiRequest
                 Rule::unique('karyawans', 'Email')->ignore($karyawan?->getKey()),
             ],
             'Role' => ['required', 'string', 'max:255'],
+            'password' => ['nullable', 'string', 'min:8'],
             'status' => ['required', 'boolean'],
         ];
     }

@@ -68,5 +68,15 @@
                 data-icon="help">help</span>
             <span class="font-sans text-[13px] font-medium">Support</span>
         </a>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button
+                class="group flex w-full items-center px-8 py-3 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+                type="submit">
+                <span class="material-symbols-outlined mr-4 transition-transform group-hover:translate-x-1 duration-300"
+                    data-icon="logout">logout</span>
+                <span class="font-sans text-[13px] font-medium">Logout</span>
+            </button>
+        </form>
     </div>
 </aside>

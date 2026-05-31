@@ -115,6 +115,28 @@
     </header>
 
     <main class="ml-0 md:ml-64 pt-24 pb-12 px-4 md:px-8 min-h-screen">
+        @php
+            $levelStyles = [
+                'info' => [
+                    'bg' => 'bg-blue-100',
+                    'text' => 'text-blue-600',
+                    'badge' => 'bg-blue-50 text-blue-700 border-blue-100',
+                    'icon' => 'info',
+                ],
+                'warning' => [
+                    'bg' => 'bg-amber-100',
+                    'text' => 'text-amber-600',
+                    'badge' => 'bg-amber-50 text-amber-700 border-amber-100',
+                    'icon' => 'warning',
+                ],
+                'critical' => [
+                    'bg' => 'bg-red-100',
+                    'text' => 'text-red-600',
+                    'badge' => 'bg-red-50 text-red-700 border-red-100',
+                    'icon' => 'error',
+                ],
+            ];
+        @endphp
         <div class="mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div class="space-y-2">
                 <h2 class="text-4xl font-extrabold tracking-tighter text-on-surface leading-none">System Audit Log</h2>
@@ -141,7 +163,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
                 <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-4">Total Activities</p>
-                <p class="text-3xl font-black text-on-surface">12,842</p>
+                <p class="text-3xl font-black text-on-surface">{{ number_format($stats['total']) }}</p>
                 <p class="text-xs text-blue-600 font-bold mt-2 flex items-center">
                     <span class="material-symbols-outlined text-sm mr-1" data-icon="trending_up">trending_up</span>
                     +14% from last week
@@ -149,12 +171,12 @@
             </div>
             <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
                 <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-4">New Entries</p>
-                <p class="text-3xl font-black text-on-surface">439</p>
+                <p class="text-3xl font-black text-on-surface">{{ number_format($stats['last_24h']) }}</p>
                 <p class="text-xs text-zinc-500 font-medium mt-2">Added in last 24h</p>
             </div>
             <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
                 <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-4">Sensitive Edits</p>
-                <p class="text-3xl font-black text-on-surface">18</p>
+                <p class="text-3xl font-black text-on-surface">{{ number_format($stats['sensitive']) }}</p>
                 <p class="text-xs text-error font-bold mt-2 flex items-center">
                     <span class="material-symbols-outlined text-sm mr-1" data-icon="warning">warning</span>
                     Needs review
@@ -162,7 +184,7 @@
             </div>
             <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
                 <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-4">System Alerts</p>
-                <p class="text-3xl font-black text-on-surface">0</p>
+                <p class="text-3xl font-black text-on-surface">{{ number_format($stats['alerts']) }}</p>
                 <p class="text-xs text-zinc-500 font-medium mt-2">Normal operational state</p>
             </div>
         </div>
@@ -170,167 +192,83 @@
         <div class="relative">
             <div class="absolute left-[31px] top-0 bottom-0 w-px bg-surface-container-highest"></div>
 
-            <div class="relative z-10 mb-8">
-                <div class="flex items-center">
-                    <div
-                        class="w-[64px] h-[64px] rounded-2xl bg-surface-container-lowest border border-outline-variant/20 flex items-center justify-center shadow-sm">
-                        <div class="text-center">
-                            <span class="block text-[10px] uppercase font-black text-on-surface-variant">Oct</span>
-                            <span class="block text-xl font-black text-on-surface -mt-1">24</span>
-                        </div>
-                    </div>
-                    <div class="ml-6">
-                        <h3 class="text-xl font-bold text-on-surface">Thursday</h3>
-                        <p class="text-sm text-on-surface-variant font-medium">142 Events recorded</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-6 pl-[88px]">
-                <div
-                    class="group relative bg-surface-container-lowest p-6 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-outline-variant/15 hover:shadow-xl hover:shadow-zinc-200/40">
-                    <div class="flex items-start justify-between gap-6">
-                        <div class="flex items-start gap-5">
-                            <div
-                                class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-on-surface text-base">New Purchase Request Created</h4>
-                                <p class="text-sm text-on-surface-variant mt-1 leading-relaxed">
-                                    User <span class="font-semibold text-on-surface">Elena Rodriguez</span> initiated PR-4092
-                                    for <span class="font-semibold text-on-surface">1,500 units of Raw Silicon</span>.
-                                </p>
-                                <div class="flex flex-wrap items-center gap-4 mt-4">
-                                    <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant flex items-center">
-                                        <span class="material-symbols-outlined text-xs mr-1" data-icon="schedule">schedule</span>
-                                        14:32 PM
-                                    </span>
-                                    <span
-                                        class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-black uppercase tracking-widest border border-blue-100">PROCUREMENT</span>
-                                    <span class="text-[11px] text-zinc-400 font-medium">IP: 192.168.1.44</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button
-                            class="p-2 text-zinc-400 hover:text-on-surface hover:bg-zinc-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div
-                    class="group relative bg-surface-container-lowest p-6 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-outline-variant/15 hover:shadow-xl hover:shadow-zinc-200/40">
-                    <div class="flex items-start justify-between gap-6">
-                        <div class="flex items-start gap-5">
-                            <div
-                                class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-outlined" data-icon="edit_square">edit_square</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-on-surface text-base">Inventory Stock Adjustment</h4>
-                                <p class="text-sm text-on-surface-variant mt-1 leading-relaxed">
-                                    <span class="font-semibold text-on-surface">Warehouse-B Robot #4</span> reported a
-                                    variance update on Item <span class="font-semibold text-on-surface">AX-224 (Titanium
-                                        Plates)</span>. Quantity adjusted from 450 to 442.
-                                </p>
-                                <div class="flex flex-wrap items-center gap-4 mt-4">
-                                    <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant flex items-center">
-                                        <span class="material-symbols-outlined text-xs mr-1" data-icon="schedule">schedule</span>
-                                        11:15 AM
-                                    </span>
-                                    <span
-                                        class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-black uppercase tracking-widest border border-amber-100">LOGISTICS</span>
-                                    <span class="text-[11px] text-zinc-400 font-medium">System Automated</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button
-                            class="p-2 text-zinc-400 hover:text-on-surface hover:bg-zinc-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div
-                    class="group relative bg-surface-container-lowest p-6 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-outline-variant/15 hover:shadow-xl hover:shadow-zinc-200/40">
-                    <div class="flex items-start justify-between gap-6">
-                        <div class="flex items-start gap-5">
-                            <div
-                                class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-on-surface text-base">Supplier Record Archived</h4>
-                                <p class="text-sm text-on-surface-variant mt-1 leading-relaxed">
-                                    Admin <span class="font-semibold text-on-surface">Marcus Thorne</span> removed <span
-                                        class="font-semibold text-on-surface">Global Dynamics Ltd.</span> from the active
-                                    vendors list due to contract expiration.
-                                </p>
-                                <div class="flex flex-wrap items-center gap-4 mt-4">
-                                    <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant flex items-center">
-                                        <span class="material-symbols-outlined text-xs mr-1" data-icon="schedule">schedule</span>
-                                        09:45 AM
-                                    </span>
-                                    <span
-                                        class="px-2.5 py-1 rounded-full bg-red-50 text-red-700 text-[10px] font-black uppercase tracking-widest border border-red-100">ADMINISTRATION</span>
-                                    <span class="text-[11px] text-zinc-400 font-medium">IP: 10.0.0.12</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button
-                            class="p-2 text-zinc-400 hover:text-on-surface hover:bg-zinc-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="relative z-10 mt-12 mb-8">
-                <div class="flex items-center">
-                    <div
-                        class="w-[64px] h-[64px] rounded-2xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-center">
-                        <div class="text-center">
-                            <span class="block text-[10px] uppercase font-black text-on-surface-variant">Oct</span>
-                            <span class="block text-xl font-black text-zinc-400 -mt-1">23</span>
-                        </div>
-                    </div>
-                    <div class="ml-6">
-                        <h3 class="text-xl font-bold text-zinc-400">Wednesday</h3>
-                        <p class="text-sm text-on-surface-variant font-medium">98 Events recorded</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-6 pl-[88px]">
-                <div class="group relative bg-surface-container-low/40 p-6 rounded-2xl border border-transparent">
-                    <div class="flex items-start gap-5 opacity-60">
+            @forelse ($logsByDate as $date => $entries)
+                @php
+                    $day = \Illuminate\Support\Carbon::parse($date);
+                @endphp
+                <div class="relative z-10 mb-8">
+                    <div class="flex items-center">
                         <div
-                            class="w-12 h-12 rounded-full bg-zinc-100 text-zinc-500 flex items-center justify-center flex-shrink-0">
-                            <span class="material-symbols-outlined" data-icon="lock_open">lock_open</span>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-on-surface text-base">User Login Successful</h4>
-                            <p class="text-sm text-on-surface-variant mt-1">Elena Rodriguez signed in via Google SSO.</p>
-                            <div class="flex items-center gap-4 mt-4">
-                                <span
-                                    class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant flex items-center">
-                                    <span class="material-symbols-outlined text-xs mr-1" data-icon="schedule">schedule</span>
-                                    23:59 PM
-                                </span>
+                            class="w-[64px] h-[64px] rounded-2xl bg-surface-container-lowest border border-outline-variant/20 flex items-center justify-center shadow-sm">
+                            <div class="text-center">
+                                <span class="block text-[10px] uppercase font-black text-on-surface-variant">{{ $day->format('M') }}</span>
+                                <span class="block text-xl font-black text-on-surface -mt-1">{{ $day->format('d') }}</span>
                             </div>
+                        </div>
+                        <div class="ml-6">
+                            <h3 class="text-xl font-bold text-on-surface">{{ $day->format('l') }}</h3>
+                            <p class="text-sm text-on-surface-variant font-medium">{{ $entries->count() }} Events recorded</p>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="space-y-6 pl-[88px]">
+                    @foreach ($entries as $log)
+                        @php
+                            $level = $log->level ?? 'info';
+                            $style = $levelStyles[$level] ?? $levelStyles['info'];
+                        @endphp
+                        <div
+                            class="group relative bg-surface-container-lowest p-6 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-outline-variant/15 hover:shadow-xl hover:shadow-zinc-200/40">
+                            <div class="flex items-start justify-between gap-6">
+                                <div class="flex items-start gap-5">
+                                    <div
+                                        class="w-12 h-12 rounded-full {{ $style['bg'] }} {{ $style['text'] }} flex items-center justify-center flex-shrink-0">
+                                        <span class="material-symbols-outlined" data-icon="{{ $style['icon'] }}">{{ $style['icon'] }}</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-on-surface text-base">{{ $log->title }}</h4>
+                                        @if ($log->description)
+                                            <p class="text-sm text-on-surface-variant mt-1 leading-relaxed">{{ $log->description }}</p>
+                                        @endif
+                                        <div class="flex flex-wrap items-center gap-4 mt-4">
+                                            <span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant flex items-center">
+                                                <span class="material-symbols-outlined text-xs mr-1" data-icon="schedule">schedule</span>
+                                                {{ $log->created_at?->format('h:i A') }}
+                                            </span>
+                                            <span
+                                                class="px-2.5 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest {{ $style['badge'] }}">{{ strtoupper($log->category ?? 'GENERAL') }}</span>
+                                            @if ($log->actor_name || $log->ip_address)
+                                                <span class="text-[11px] text-zinc-400 font-medium">
+                                                    {{ $log->actor_name ?? 'System' }}@if ($log->ip_address) - IP: {{ $log->ip_address }}@endif
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="p-2 text-zinc-400 hover:text-on-surface hover:bg-zinc-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @empty
+                <div class="text-center py-16 text-on-surface-variant font-medium">
+                    Belum ada audit log yang tercatat.
+                </div>
+            @endforelse
         </div>
 
-        <div class="mt-16 text-center">
-            <button
-                class="px-8 py-3 bg-white text-on-surface font-bold text-sm rounded-xl shadow-sm border border-outline-variant/20 hover:bg-zinc-50 transition-colors">
-                Load Previous Entries
-            </button>
-        </div>
+        @if ($logs->hasMorePages())
+            <div class="mt-16 text-center">
+                <a href="{{ $logs->nextPageUrl() }}"
+                    class="inline-flex px-8 py-3 bg-white text-on-surface font-bold text-sm rounded-xl shadow-sm border border-outline-variant/20 hover:bg-zinc-50 transition-colors">
+                    Load Previous Entries
+                </a>
+            </div>
+        @endif
     </main>
 
     <button

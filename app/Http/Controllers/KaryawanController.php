@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\Karyawan;
 use App\Models\Request as PurchaseRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class KaryawanController extends Controller
 {
@@ -65,7 +66,9 @@ class KaryawanController extends Controller
     {
         $validated = $request->validate([
             'Nama' => ['required', 'string', 'max:255'],
+            'Email' => ['required', 'email', 'max:255', Rule::unique('karyawans', 'Email')],
             'Role' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
             'status' => ['required', 'boolean'],
         ]);
 
@@ -97,9 +100,20 @@ class KaryawanController extends Controller
     {
         $validated = $request->validate([
             'Nama' => ['required', 'string', 'max:255'],
+            'Email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('karyawans', 'Email')->ignore($karyawan->getKey()),
+            ],
             'Role' => ['required', 'string', 'max:255'],
+            'password' => ['nullable', 'string', 'min:8'],
             'status' => ['required', 'boolean'],
         ]);
+
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        }
 
         $karyawan->update($validated);
 

@@ -126,11 +126,17 @@
             <!-- Login Surface -->
             <div
                 class="bg-surface-container-lowest/80 backdrop-blur-2xl p-10 rounded-xl shadow-[0px_40px_60px_-15px_rgba(26,28,28,0.04)] border border-outline-variant/10">
-                <form class="space-y-6">
-                    <!-- Username Field -->
+                <form class="space-y-6" method="POST" action="{{ route('login.store') }}">
+                    @csrf
+                    @if ($errors->any())
+                        <div class="rounded-lg border border-error/15 bg-error-container/40 px-4 py-3 text-xs text-on-error-container">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+                    <!-- Email Field -->
                     <div class="space-y-2">
                         <label
-                            class="block text-[11px] font-bold tracking-[0.05rem] text-on-surface-variant uppercase ml-1">Username</label>
+                            class="block text-[11px] font-bold tracking-[0.05rem] text-on-surface-variant uppercase ml-1">Email</label>
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <span
@@ -139,8 +145,12 @@
                             </div>
                             <input
                                 class="w-full pl-11 pr-4 py-3.5 bg-surface-container-high border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-on-surface-variant/40"
-                                placeholder="Enter your username" type="text" />
+                                placeholder="Enter your email" type="email" name="email" value="{{ old('email') }}"
+                                autocomplete="email" required />
                         </div>
+                        @error('email')
+                            <p class="text-[11px] text-error font-semibold ml-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <!-- Password Field -->
                     <div class="space-y-2">
@@ -158,8 +168,12 @@
                             </div>
                             <input
                                 class="w-full pl-11 pr-4 py-3.5 bg-surface-container-high border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-on-surface-variant/40"
-                                placeholder="••••••••" type="password" />
+                                placeholder="********" type="password" name="password" autocomplete="current-password"
+                                required />
                         </div>
+                        @error('password')
+                            <p class="text-[11px] text-error font-semibold ml-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <!-- Options Row -->
                     <div class="flex items-center justify-between pt-1">
@@ -167,7 +181,7 @@
                             <div class="relative flex items-center">
                                 <input
                                     class="peer h-5 w-5 bg-surface-container-high border-none rounded focus:ring-0 text-primary transition-all"
-                                    type="checkbox" />
+                                    type="checkbox" name="remember" value="1" @checked(old('remember')) />
                                 <div
                                     class="absolute inset-0 border-2 border-transparent peer-checked:border-primary/20 rounded-md transition-all">
                                 </div>

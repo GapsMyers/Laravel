@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\GoodsReceiptController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,7 +12,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('/login', 'Login')->name('login');
+Route::get('/login', [LoginController::class, 'create'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'store'])->name('login.store')->middleware(['guest', 'throttle:6,1']);
+Route::post('/logout', [LoginController::class, 'destroy'])->name('logout')->middleware('auth');
 
 Route::get('/Purchase-Request', [RequestController::class, 'index'])->name('request');
 Route::post('/Purchase-Request', [RequestController::class, 'store'])->name('request.store');
@@ -25,9 +29,7 @@ Route::get('/Goods-Receipt/{purchaseRequest?}', [GoodsReceiptController::class, 
 Route::post('/Goods-Receipt/{purchaseRequest}/receive', [GoodsReceiptController::class, 'store'])
     ->name('goods-receipt.store');
 
-Route::get('/Audit-Log', function () {
-    return view('admin.audit-log');
-})->name('audit-log');
+Route::get('/Audit-Log', [AuditLogController::class, 'index'])->name('audit-log');
 
 Route::get('/dashboard', [KaryawanController::class, 'dashboard'])->name('dashboard');
 

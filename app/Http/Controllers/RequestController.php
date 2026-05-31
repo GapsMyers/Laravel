@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditLog;
 use App\Models\Barang;
 use App\Models\Request as PurchaseRequest;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class RequestController extends Controller
             'item.qty_requested' => ['required', 'integer', 'min:1'],
         ]);
 
-        DB::transaction(function () use ($validated) {
+        $purchaseRequest = DB::transaction(function () use ($validated) {
             $purchaseRequest = PurchaseRequest::query()->create([
                 'pr_number' => $this->generatePrNumber(),
                 'department' => $validated['department'],
@@ -51,7 +52,32 @@ class RequestController extends Controller
             ]);
 
             $purchaseRequest->items()->create($this->buildItemPayload($validated['item']));
+
+            return $purchaseRequest;
         });
+
+        $purchaseRequest->load('items');
+
+        AuditLog::query()->create([
+            'action' => 'request_created',
+            'title' => 'Purchase request created',
+            'description' => sprintf(
+                'Request %s dibuat untuk %s (%s).',
+                $purchaseRequest->pr_number,
+                $purchaseRequest->items->first()?->nama_barang ?? 'barang',
+                $purchaseRequest->items->first()?->qty_requested ?? 0
+            ),
+            'category' => 'PROCUREMENT',
+            'level' => 'info',
+            'actor_name' => $purchaseRequest->requester_name,
+            'ip_address' => $request->ip(),
+            'entity_type' => PurchaseRequest::class,
+            'entity_id' => $purchaseRequest->id,
+            'metadata' => [
+                'pr_number' => $purchaseRequest->pr_number,
+                'item' => $purchaseRequest->items->first()?->toArray(),
+            ],
+        ]);
 
         return redirect()->route('request')->with('success', 'Purchase request berhasil dibuat.');
     }
@@ -85,6 +111,22 @@ class RequestController extends Controller
             'rejected_at' => null,
         ]);
 
+        AuditLog::query()->create([
+            'action' => 'request_approved',
+            'title' => 'Purchase request approved',
+            'description' => sprintf('Request %s disetujui.', $purchaseRequest->pr_number),
+            'category' => 'APPROVAL',
+            'level' => 'info',
+            'actor_name' => auth()->user()?->name ?? 'System',
+            'ip_address' => request()->ip(),
+            'entity_type' => PurchaseRequest::class,
+            'entity_id' => $purchaseRequest->id,
+            'metadata' => [
+                'pr_number' => $purchaseRequest->pr_number,
+                'status' => $purchaseRequest->status,
+            ],
+        ]);
+
         return redirect()->route('approval', ['request' => $purchaseRequest->id])
             ->with('success', 'Request berhasil disetujui.');
     }
@@ -99,6 +141,22 @@ class RequestController extends Controller
             'status' => 'rejected',
             'rejected_at' => now(),
             'approved_at' => null,
+        ]);
+
+        AuditLog::query()->create([
+            'action' => 'request_rejected',
+            'title' => 'Purchase request rejected',
+            'description' => sprintf('Request %s ditolak.', $purchaseRequest->pr_number),
+            'category' => 'APPROVAL',
+            'level' => 'warning',
+            'actor_name' => auth()->user()?->name ?? 'System',
+            'ip_address' => request()->ip(),
+            'entity_type' => PurchaseRequest::class,
+            'entity_id' => $purchaseRequest->id,
+            'metadata' => [
+                'pr_number' => $purchaseRequest->pr_number,
+                'status' => $purchaseRequest->status,
+            ],
         ]);
 
         return redirect()->route('approval')->with('success', 'Request berhasil ditolak.');

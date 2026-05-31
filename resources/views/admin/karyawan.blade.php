@@ -161,6 +161,7 @@
                         <tr
                             class="bg-surface-container-low text-on-surface-variant uppercase text-[10px] font-bold tracking-[0.1em]">
                             <th class="px-8 py-5">Nama</th>
+                            <th class="px-6 py-5">Email</th>
                             <th class="px-6 py-5">Role</th>
                             <th class="px-6 py-5">Status</th>
                             <th class="px-8 py-5 text-right">Aksi</th>
@@ -193,6 +194,9 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td class="px-6 py-6 text-sm text-on-surface-variant">
+                                    {{ $karyawan->Email }}
+                                </td>
                                 <td class="px-6 py-6">
                                     <span
                                         class="text-xs font-medium text-on-secondary-container bg-secondary-container/30 px-3 py-1 rounded-full">{{ $karyawan->Role }}</span>
@@ -222,7 +226,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-8 py-10 text-center text-sm text-on-surface-variant">
+                                <td colspan="5" class="px-8 py-10 text-center text-sm text-on-surface-variant">
                                     Belum ada data karyawan.
                                 </td>
                             </tr>
@@ -259,10 +263,24 @@
                 </div>
 
                 <div>
+                    <label class="block text-sm font-semibold mb-2" for="email">Email</label>
+                    <input id="email" name="Email" type="email" required
+                        class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                        value="{{ old('Email') }}">
+                </div>
+
+                <div>
                     <label class="block text-sm font-semibold mb-2" for="role">Role</label>
                     <input id="role" name="Role" type="text" required
                         class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
                         value="{{ old('Role') }}">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2" for="password">Password</label>
+                    <input id="password" name="password" type="password" required
+                        class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                        placeholder="Minimal 8 karakter">
                 </div>
 
                 <div>
@@ -307,10 +325,24 @@
                     </div>
 
                     <div>
+                        <label class="block text-sm font-semibold mb-2" for="email-{{ $karyawan->id }}">Email</label>
+                        <input id="email-{{ $karyawan->id }}" name="Email" type="email" required
+                            class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                            value="{{ $karyawan->Email }}">
+                    </div>
+
+                    <div>
                         <label class="block text-sm font-semibold mb-2" for="role-{{ $karyawan->id }}">Role</label>
                         <input id="role-{{ $karyawan->id }}" name="Role" type="text" required
                             class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
                             value="{{ $karyawan->Role }}">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" for="password-{{ $karyawan->id }}">Password</label>
+                        <input id="password-{{ $karyawan->id }}" name="password" type="password"
+                            class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
+                            placeholder="Kosongkan jika tidak diganti">
                     </div>
 
                     <div>

@@ -18,6 +18,7 @@ class KaryawanStoreRequest extends ApiRequest
             'Nama' => ['required', 'string', 'max:255'],
             'Email' => ['required', 'email', 'max:255', Rule::unique('karyawans', 'Email')],
             'Role' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
             'status' => ['required', 'boolean'],
         ];
     }

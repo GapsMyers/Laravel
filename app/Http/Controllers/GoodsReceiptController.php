@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditLog;
 use App\Models\Request as PurchaseRequest;
 use App\Models\RequestItem;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class GoodsReceiptController extends Controller
             $purchaseRequest = $availableRequests->firstWhere('id', $requestedId);
         }
 
-        if (! $purchaseRequest) {
+          if (! $purchaseRequest) {
             $purchaseRequest = $availableRequests->first();
         } elseif (! $purchaseRequest->relationLoaded('items')) {
             $purchaseRequest->load('items');
@@ -49,7 +50,7 @@ class GoodsReceiptController extends Controller
 
         $shouldFinalize = $request->input('action') === 'confirm';
 
-        DB::transaction(function () use ($validated, $purchaseRequest, $shouldFinalize) {
+        $updatedRequest = DB::transaction(function () use ($validated, $purchaseRequest, $shouldFinalize) {
             $purchaseRequest->load('items.barang');
 
             foreach ($purchaseRequest->items as $item) {
@@ -91,7 +92,29 @@ class GoodsReceiptController extends Controller
                     'received_at' => $allReceived ? now() : null,
                 ]);
             }
+
+            return $purchaseRequest->refresh();
         });
+
+        AuditLog::query()->create([
+            'action' => 'goods_receipt_updated',
+            'title' => 'Goods receipt updated',
+            'description' => sprintf(
+                'Penerimaan barang untuk %s diperbarui (status: %s).',
+                $updatedRequest->pr_number,
+                $updatedRequest->status
+            ),
+            'category' => 'LOGISTICS',
+            'level' => $updatedRequest->status === 'received' ? 'info' : 'warning',
+            'actor_name' => auth()->user()?->name ?? 'System',
+            'ip_address' => $request->ip(),
+            'entity_type' => PurchaseRequest::class,
+            'entity_id' => $updatedRequest->id,
+            'metadata' => [
+                'pr_number' => $updatedRequest->pr_number,
+                'status' => $updatedRequest->status,
+            ],
+        ]);
 
         return redirect()->route('goods-receipt', ['purchaseRequest' => $purchaseRequest->id])
             ->with('success', 'Goods receipt berhasil disimpan.');
