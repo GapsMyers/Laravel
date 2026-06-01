@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Models\Karyawan;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +18,18 @@ class LoginController extends Controller
 
     public function store(LoginRequest $request): RedirectResponse
     {
-        if (! $this->attemptLogin($request)) {
+        $loginId = $request->input('email');
+        $user = Karyawan::where('Email', $loginId)->orWhere('Nama', $loginId)->first();
+
+        if ($user && ! $user->status) {
             return back()
-                ->withErrors(['email' => 'Email atau password salah.'])
+                ->withErrors(['email' => 'Akun Anda telah dinonaktifkan.'])
+                ->onlyInput('email');
+        }
+
+        if (! $this->attemptLogin($request, $user)) {
+            return back()
+                ->withErrors(['email' => 'Email/Username atau password salah.'])
                 ->onlyInput('email');
         }
 
@@ -35,14 +45,31 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect('/');
     }
 
-    private function attemptLogin(LoginRequest $request): bool
+    private function attemptLogin(LoginRequest $request, ?Karyawan $user): bool
     {
-        return Auth::attempt(
-            array_merge($request->credentials(), ['status' => true]),
-            $request->boolean('remember')
-        );
+        if (! $user) {
+            return false;
+        }
+
+        $credentials = [
+            'Email' => $user->Email,
+            'password' => $request->input('password'),
+            'status' => true,
+        ];
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            if (strtolower(Auth::user()->Role) !== 'admin') {
+                Auth::logout();
+
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

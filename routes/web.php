@@ -29,9 +29,11 @@ Route::get('/Goods-Receipt/{purchaseRequest?}', [GoodsReceiptController::class, 
 Route::post('/Goods-Receipt/{purchaseRequest}/receive', [GoodsReceiptController::class, 'store'])
     ->name('goods-receipt.store');
 
+Route::get('/Audit-Log/export', [AuditLogController::class, 'export'])->name('audit-log.export');
 Route::get('/Audit-Log', [AuditLogController::class, 'index'])->name('audit-log');
 
 Route::get('/dashboard', [KaryawanController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard/chart-data', [KaryawanController::class, 'chartData'])->name('dashboard.chart-data');
 
 // Fungsi CRUD KARYAWAN
 Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');

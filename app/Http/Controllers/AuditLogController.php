@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AuditLog;
 use Illuminate\Http\Request;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class AuditLogController extends Controller
 {
@@ -27,5 +28,23 @@ class AuditLogController extends Controller
             'logsByDate' => $logsByDate,
             'stats' => $stats,
         ]);
+    }
+
+    public function export()
+    {
+        $logs = AuditLog::query()->latest()->get();
+
+        return (new FastExcel($logs))->download('audit-report.xlsx', function ($log) {
+            return [
+                'ID' => $log->id,
+                'Event Title' => $log->title,
+                'Category' => strtoupper($log->category),
+                'Level' => strtoupper($log->level),
+                'Description' => $log->description,
+                'Actor Name' => $log->actor_name ?? 'System',
+                'IP Address' => $log->ip_address,
+                'Time' => $log->created_at?->format('Y-m-d H:i:s'),
+            ];
+        });
     }
 }

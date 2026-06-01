@@ -28,6 +28,32 @@ class Karyawan extends Authenticatable
     ];
 
     /**
+     * Map capitalized attribute names to their lowercase equivalents
+     * to handle Oracle DB returning lowercase column names.
+     *
+     * @var array<string, string>
+     */
+    private const COLUMN_MAP = [
+        'Nama' => 'nama',
+        'Email' => 'email',
+        'Role' => 'role',
+    ];
+
+    /**
+     * @param  string  $key
+     */
+    public function getAttribute($key): mixed
+    {
+        if (isset(self::COLUMN_MAP[$key])) {
+            $value = parent::getAttribute($key);
+
+            return $value ?? parent::getAttribute(self::COLUMN_MAP[$key]);
+        }
+
+        return parent::getAttribute($key);
+    }
+
+    /**
      * @return array<string, string>
      */
     protected function casts(): array

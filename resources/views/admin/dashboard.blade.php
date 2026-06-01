@@ -227,53 +227,16 @@
 					<div class="flex justify-between items-center mb-10">
 						<div>
 							<h3 class="text-lg font-bold text-on-surface">Pengadaan Barang Trend</h3>
-							<p class="text-xs text-on-surface-variant">Monthly requisition activity analytics</p>
+							<p class="text-xs text-on-surface-variant">Aktivitas purchase request berdasarkan periode</p>
 						</div>
-						<select class="bg-surface-container text-xs font-semibold border-none rounded-lg focus:ring-0">
-							<option>Last 6 Months</option>
-							<option>Yearly</option>
+						<select id="chartPeriodSelect" class="bg-surface-container text-xs font-semibold border-none rounded-lg focus:ring-0 cursor-pointer">
+							<option value="daily">Harian</option>
+							<option value="weekly">Mingguan</option>
+							<option value="monthly" selected>Bulanan</option>
 						</select>
 					</div>
-					<div class="relative h-64 w-full flex items-end justify-between px-4">
-						<div class="absolute inset-0 flex flex-col justify-between py-2 text-[10px] text-zinc-400 font-medium">
-							<span>100</span><span>75</span><span>50</span><span>25</span><span>0</span>
-						</div>
-						<div class="flex-1 flex flex-col items-center gap-2">
-							<div class="w-2 rounded-full bg-blue-100 h-[40%] relative overflow-hidden">
-								<div class="absolute bottom-0 w-full bg-blue-600 h-[60%] rounded-full"></div>
-							</div>
-							<span class="text-[10px] font-bold text-zinc-500">JAN</span>
-						</div>
-						<div class="flex-1 flex flex-col items-center gap-2">
-							<div class="w-2 rounded-full bg-blue-100 h-[60%] relative overflow-hidden">
-								<div class="absolute bottom-0 w-full bg-blue-600 h-[75%] rounded-full"></div>
-							</div>
-							<span class="text-[10px] font-bold text-zinc-500">FEB</span>
-						</div>
-						<div class="flex-1 flex flex-col items-center gap-2">
-							<div class="w-2 rounded-full bg-blue-100 h-[80%] relative overflow-hidden">
-								<div class="absolute bottom-0 w-full bg-blue-600 h-[40%] rounded-full"></div>
-							</div>
-							<span class="text-[10px] font-bold text-zinc-500">MAR</span>
-						</div>
-						<div class="flex-1 flex flex-col items-center gap-2">
-							<div class="w-2 rounded-full bg-blue-100 h-[55%] relative overflow-hidden">
-								<div class="absolute bottom-0 w-full bg-blue-600 h-[90%] rounded-full"></div>
-							</div>
-							<span class="text-[10px] font-bold text-zinc-500">APR</span>
-						</div>
-						<div class="flex-1 flex flex-col items-center gap-2">
-							<div class="w-2 rounded-full bg-blue-100 h-[70%] relative overflow-hidden">
-								<div class="absolute bottom-0 w-full bg-blue-600 h-[65%] rounded-full"></div>
-							</div>
-							<span class="text-[10px] font-bold text-zinc-500">MAY</span>
-						</div>
-						<div class="flex-1 flex flex-col items-center gap-2">
-							<div class="w-2 rounded-full bg-blue-100 h-[90%] relative overflow-hidden">
-								<div class="absolute bottom-0 w-full bg-blue-600 h-[85%] rounded-full"></div>
-							</div>
-							<span class="text-[10px] font-bold text-zinc-500">JUN</span>
-						</div>
+					<div class="relative h-64 w-full">
+						<canvas id="trendChart"></canvas>
 					</div>
 				</div>
 				<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm">
@@ -353,6 +316,121 @@
 			</div>
 		</div>
 	</main>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const ctx = document.getElementById('trendChart').getContext('2d');
+			const initialData = @json($chartData);
+
+			const chart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: initialData.labels,
+					datasets: [
+						{
+							label: 'Pending',
+							data: initialData.pending,
+							backgroundColor: 'rgba(245, 158, 11, 0.8)',
+							borderColor: 'rgba(245, 158, 11, 1)',
+							borderWidth: 1,
+							borderRadius: 4,
+							borderSkipped: false,
+						},
+						{
+							label: 'Approved',
+							data: initialData.approved,
+							backgroundColor: 'rgba(16, 185, 129, 0.8)',
+							borderColor: 'rgba(16, 185, 129, 1)',
+							borderWidth: 1,
+							borderRadius: 4,
+							borderSkipped: false,
+						},
+						{
+							label: 'Rejected',
+							data: initialData.rejected,
+							backgroundColor: 'rgba(239, 68, 68, 0.8)',
+							borderColor: 'rgba(239, 68, 68, 1)',
+							borderWidth: 1,
+							borderRadius: 4,
+							borderSkipped: false,
+						}
+					]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					interaction: {
+						intersect: false,
+						mode: 'index',
+					},
+					plugins: {
+						legend: {
+							position: 'bottom',
+							labels: {
+								usePointStyle: true,
+								pointStyle: 'circle',
+								padding: 20,
+								font: { family: 'Inter', size: 11, weight: '600' }
+							}
+						},
+						tooltip: {
+							backgroundColor: 'rgba(24, 24, 27, 0.9)',
+							titleFont: { family: 'Inter', size: 12, weight: '700' },
+							bodyFont: { family: 'Inter', size: 11 },
+							padding: 12,
+							cornerRadius: 8,
+							boxPadding: 6,
+						}
+					},
+					scales: {
+						x: {
+							stacked: true,
+							grid: { display: false },
+							ticks: {
+								font: { family: 'Inter', size: 10, weight: '600' },
+								color: '#71717a',
+							},
+							border: { display: false },
+						},
+						y: {
+							stacked: true,
+							beginAtZero: true,
+							grid: {
+								color: 'rgba(0,0,0,0.04)',
+								drawBorder: false,
+							},
+							ticks: {
+								font: { family: 'Inter', size: 10, weight: '500' },
+								color: '#a1a1aa',
+								stepSize: 1,
+								precision: 0,
+							},
+							border: { display: false },
+						}
+					},
+					animation: {
+						duration: 600,
+						easing: 'easeInOutQuart',
+					}
+				}
+			});
+
+			document.getElementById('chartPeriodSelect').addEventListener('change', function () {
+				const period = this.value;
+				fetch(`{{ route('dashboard.chart-data') }}?period=${period}`)
+					.then(res => res.json())
+					.then(data => {
+						chart.data.labels = data.labels;
+						chart.data.datasets[0].data = data.pending;
+						chart.data.datasets[1].data = data.approved;
+						chart.data.datasets[2].data = data.rejected;
+						chart.update();
+					})
+					.catch(err => console.error('Chart data error:', err));
+			});
+		});
+	</script>
 </body>
 
 </html>

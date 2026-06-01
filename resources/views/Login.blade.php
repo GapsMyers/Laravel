@@ -166,10 +166,15 @@
                                     class="material-symbols-outlined text-on-surface-variant text-sm group-focus-within:text-primary transition-colors"
                                     data-icon="lock">lock</span>
                             </div>
-                            <input
-                                class="w-full pl-11 pr-4 py-3.5 bg-surface-container-high border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-on-surface-variant/40"
+                            <input id="password"
+                                class="w-full pl-11 pr-12 py-3.5 bg-surface-container-high border-none rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-on-surface-variant/40"
                                 placeholder="********" type="password" name="password" autocomplete="current-password"
                                 required />
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <button type="button" onclick="togglePassword()" class="text-on-surface-variant hover:text-primary focus:outline-none transition-colors p-1 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[20px]" id="togglePasswordIcon">visibility_off</span>
+                                </button>
+                            </div>
                         </div>
                         @error('password')
                             <p class="text-[11px] text-error font-semibold ml-1">{{ $message }}</p>
@@ -236,6 +241,20 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const icon = document.getElementById('togglePasswordIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.textContent = 'visibility';
+            } else {
+                passwordInput.type = 'password';
+                icon.textContent = 'visibility_off';
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -271,9 +271,11 @@
 
                 <div>
                     <label class="block text-sm font-semibold mb-2" for="role">Role</label>
-                    <input id="role" name="Role" type="text" required
-                        class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
-                        value="{{ old('Role') }}">
+                    <select id="role" name="Role" required
+                        class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20">
+                        <option value="Karyawan" @selected(strtolower(old('Role') ?? '') === 'karyawan')>Karyawan</option>
+                        <option value="Admin" @selected(strtolower(old('Role') ?? '') === 'admin')>Admin</option>
+                    </select>
                 </div>
 
                 <div>
@@ -333,9 +335,11 @@
 
                     <div>
                         <label class="block text-sm font-semibold mb-2" for="role-{{ $karyawan->id }}">Role</label>
-                        <input id="role-{{ $karyawan->id }}" name="Role" type="text" required
-                            class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20"
-                            value="{{ $karyawan->Role }}">
+                        <select id="role-{{ $karyawan->id }}" name="Role" required
+                            class="w-full rounded-lg border-zinc-200 focus:border-primary focus:ring-primary/20">
+                            <option value="Karyawan" @selected(strtolower($karyawan->Role) === 'karyawan')>Karyawan</option>
+                            <option value="Admin" @selected(strtolower($karyawan->Role) === 'admin')>Admin</option>
+                        </select>
                     </div>
 
                     <div>

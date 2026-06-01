@@ -122,7 +122,7 @@
 			<div>
 				<span class="text-[11px] font-bold text-blue-600 tracking-widest uppercase mb-2 block">Management
 					Cluster</span>
-				<h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface">Purchase Requests</h2>
+				<h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface">Purchase Order</h2>
 				<p class="text-on-surface-variant mt-2 max-w-lg">Monitor, track, and manage all active procurement
 					cycles across regional manufacturing hubs.</p>
 			</div>

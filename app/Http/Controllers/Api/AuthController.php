@@ -12,10 +12,21 @@ class AuthController extends Controller
 {
     public function store(AuthTokenRequest $request): JsonResponse
     {
+        $loginId = $request->string('email')->toString();
         $user = Karyawan::query()
-            ->where('Email', $request->string('email')->toString())
-            ->where('status', true)
+            ->where('Email', $loginId)
+            ->orWhere('Nama', $loginId)
             ->first();
+
+        if ($user && ! $user->status) {
+            return response()->json([
+                'message' => 'Akun Anda telah dinonaktifkan.',
+                'data' => null,
+                'errors' => [
+                    'email' => ['Akun Anda telah dinonaktifkan.'],
+                ],
+            ], 403);
+        }
 
         if (! $user || ! Hash::check($request->string('password')->toString(), $user->password)) {
             return response()->json([

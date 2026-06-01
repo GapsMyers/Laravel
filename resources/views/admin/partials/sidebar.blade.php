@@ -19,9 +19,9 @@
                 <span class="sidebar-icon"><i class="bi bi-check2-circle"></i></span>
                 <span>Approval</span>
             </a>
-            <a class="sidebar-link" href="#">
+            <a class="sidebar-link {{ request()->routeIs('order') ? 'is-active' : '' }}" href="#">
                 <span class="sidebar-icon"><i class="bi bi-file-earmark-text"></i></span>
-                <span>Purchase Request</span>
+                <span>Purchase Order</span>
             </a>
             <a class="sidebar-link" href="#">
                 <span class="sidebar-icon"><i class="bi bi-box-seam"></i></span>

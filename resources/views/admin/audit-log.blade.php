@@ -271,11 +271,11 @@
         @endif
     </main>
 
-    <button
+    <a href="{{ route('audit-log.export') }}"
         class="fixed bottom-8 right-8 bg-primary text-on-primary-container px-6 py-4 rounded-2xl shadow-2xl flex items-center font-bold tracking-tight hover:scale-105 active:scale-95 transition-all z-50">
         <span class="material-symbols-outlined mr-3" data-icon="download">download</span>
         Export Full Audit Report
-    </button>
+    </a>
 </body>
 
 </html>
